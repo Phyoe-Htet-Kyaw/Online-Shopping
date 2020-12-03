@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <button id='btnGiveCommand'>Give Command!</button>
+    <br><br>
+    <span id='message'></span>
+    <br><br>
+    
+    <script>
+        var voiceList = document.querySelector('#voiceList');
+        var synth = window.speechSynthesis;
+        var voices = [];
+
+        function speakEng(txt){
+            var toSpeak = new SpeechSynthesisUtterance(txt);
+            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+            voices = synth.getVoices();
+            voices.forEach((voice)=>{
+                if(voice.name === selectedVoiceName){
+                    toSpeak.voice = voice;
+                }
+            });
+            synth.speak(toSpeak);
+        }
+        var message = document.querySelector('#message');
+
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+
+        var grammar = '#JSGF V1.0;'
+
+        var recognition = new SpeechRecognition();
+        var speechRecognitionList = new SpeechGrammarList();
+        speechRecognitionList.addFromString(grammar, 1);
+        recognition.grammars = speechRecognitionList;
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onresult = function(event) {
+            var last = event.results.length - 1;
+            var command = event.results[last][0].transcript;
+            message.textContent = 'Voice Input: ' + command + '.';
+
+            if(command.toLowerCase() === 'hello'){
+                speakEng("Hello Sir! Nice to meet you.");
+            }
+            else if (command.toLowerCase() === 'select tony'){
+                speakEng("Tony is selected");
+            }
+            else if (command.toLowerCase() === 'select bruce'){
+                speakEng("Bruce is selected");
+            }
+            else if (command.toLowerCase() === 'select nick'){
+                speakEng("Nick is selected");
+            }   
+        };
+
+        recognition.onspeechend = function() {
+            recognition.stop();
+        };
+
+        recognition.onerror = function(event) {
+            message.textContent = 'Error occurred in recognition: ' + event.error;
+        }        
+
+        document.querySelector('#btnGiveCommand').addEventListener('click', function(){
+            recognition.start();
+
+        });
+    </script>
+</body>
+</html>
