@@ -1,5 +1,5 @@
 {
-  "name": "voice_recognition_system",
+  "name": "online_shopping",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Phyoe-Htet-Kyaw/voice_recognition.git"
+    "url": "git+https://github.com/Phyoe-Htet-Kyaw/Online-Shopping.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Phyoe-Htet-Kyaw/voice_recognition/issues"
+    "url": "https://github.com/Phyoe-Htet-Kyaw/Online-Shopping/issues"
   },
-  "homepage": "https://github.com/Phyoe-Htet-Kyaw/voice_recognition#readme",
+  "homepage": "https://github.com/Phyoe-Htet-Kyaw/Online-Shopping#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^3.1.5",

@@ -1,0 +1,1 @@
+exports.Home = (req, res) => res.render("user/index")
