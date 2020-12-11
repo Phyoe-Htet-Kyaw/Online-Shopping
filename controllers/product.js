@@ -2,7 +2,6 @@ const db = require("../database/db")
 const multer = require('multer')
 const path = require("path")
 const fs = require("fs")
-const e = require("express")
 
 const storage = multer.diskStorage({
     destination: "./assets/uploads/",

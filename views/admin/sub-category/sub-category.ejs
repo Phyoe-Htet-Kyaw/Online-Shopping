@@ -1,0 +1,60 @@
+<%- include('../templates/header.ejs') -%>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <h1>Sub-Category</h1>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <a href="/admin/add_sub_category" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+              <table class="table table-sm table-stripped" id="example">
+                <thead>
+                  <tr>
+                    <th>Option</th>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% sub_category.forEach(function(item, key){
+                    %>
+                    <tr>
+                      <td>
+                        <a href="/admin/edit_sub_category/<%= item.id %>" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="/admin/delete_sub_category/<%= item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                      </td>
+                      <td><%= key + 1 %></td>
+                      <td><%= item.name %></td>
+                      <td><%= item.category %></td>
+                    </tr>
+                    <%
+                  }) 
+                  %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<%- include('../templates/footer.ejs') -%>

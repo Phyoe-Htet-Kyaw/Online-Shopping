@@ -1,0 +1,65 @@
+<%- include('../templates/header.ejs') -%>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Edit Sub-Category</h1>
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <%
+              if(locals.message){
+                %>
+                <p class="alert alert-danger"><%= message %></p>
+                <%
+              }
+            %>
+            <form action="/admin/update_sub_category/<%= sub_category.id %>" method="post">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" value="<%= sub_category.name %>" name="name" placeholder="Enter Name" id="name" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="category_id">Category</label>
+                            <select name="category_id" id="category_id" class="form-control form-control-sm">
+                                <% category.forEach(function(item){
+                                    %>
+                                        <option value="<%= item.id %>" <% if(item.id == sub_category.category_id){ %> selected <% } %>><%= item.name %></option>
+                                    <%
+                                }) %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <a href="/admin/sub_category" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                            <a href="#"><button class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<%- include('../templates/footer.ejs') -%>
