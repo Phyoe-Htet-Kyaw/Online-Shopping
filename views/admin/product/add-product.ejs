@@ -1,0 +1,94 @@
+<%- include('../templates/header.ejs') -%>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Add Product</h1>
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <%
+              if(locals.message){
+                %>
+                <p class="alert alert-danger"><%= message %></p>
+                <%
+              }
+            %>
+            <form action="/admin/store_product" method="post" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" placeholder="Enter Name" id="name" class="form-control form-control-sm">
+                  </div>
+                  <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" name="price" placeholder="Enter Price" id="price" class="form-control form-control-sm">
+                  </div>
+                  <div class="form-group">
+                    <label for="discount_price">Discount Price</label>
+                    <input type="number" name="discount_price" placeholder="Enter Discount Price" id="discount_price" class="form-control form-control-sm">
+                  </div>
+                  <div class="form-group">
+                    <label for="qty">Qty</label>
+                    <input type="number" name="qty" placeholder="Enter Qty" id="qty" class="form-control form-control-sm">
+                  </div>
+                  <div class="form-group">
+                    <label for="photo">Photo</label>
+                    <input type="file" name="photo" multiple placeholder="Enter Photo" id="photo" class="form-control-file form-control-sm">
+                  </div>
+                  <div class="form-group">
+                    <label for="category_id">Category</label>
+                    <select name="category_id" id="category_id" class="form-control form-control-sm">
+                      <% category.forEach(function(item){
+                        %>
+                          <option value="<%= item.id %>"><%= item.name %></option>
+                        <%
+                      }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="summernote" class="form-control form-control-sm" placeholder="Enter Description" cols="30" rows="20"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="instock">Instock</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="instock" id="yes"><label for="yes" class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="instock" id="no"><label for="no" class="form-check-label">No</label>
+                    </div>
+                  </div>
+                </div>
+              </div>       
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <a href="/admin/product" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                    <a href="#"><button class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></a>
+                  </div>
+                </div>
+              </div>       
+            </form>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<%- include('../templates/footer.ejs') -%>

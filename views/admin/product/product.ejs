@@ -1,0 +1,70 @@
+<%- include('../templates/header.ejs') -%>
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <h1>Product</h1>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <a href="/admin/add_product" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+              <table class="table table-sm table-stripped" id="example">
+                <thead>
+                  <tr>
+                    <th>Option</th>
+                    <th>No.</th>
+                    <th>Instock</th>
+                    <th>Original Price</th>
+                    <th>Discount Price</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Photo</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% product.forEach(function(item, key){
+                    %>
+                    <tr>
+                      <td>
+                        <a href="/admin/edit_product/<%= item.id %>" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="/admin/delete_product/<%= item.id %>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                      </td>
+                      <td><%= key + 1 %></td>
+                      <td><%= item.name %></td>
+                      <td><%= item.price %> MMK</td>
+                      <td><%= item.discount_price %> MMK</td>
+                      <td><%= item.price - item.discount_price %> MMK</td>
+                      <td><%= item.qty %></td>
+                      <td><img src="/assets/uploads/<%= item.photo %>" alt="<%= item.photo %>" style="width: 100px;"></td>
+                      <td><%= item.category %></td>
+                    </tr>
+                    <%
+                  }) 
+                  %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<%- include('../templates/footer.ejs') -%>
