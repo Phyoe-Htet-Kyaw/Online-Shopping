@@ -1,13 +1,17 @@
 const express = require("express")
 const router = express.Router()
-const CategoryController = require("../controllers/category") 
-const ProductController = require("../controllers/product")
-const SubCategoryController = require("../controllers/sub-category")
+
+const CategoryController = require("../app/controllers/category") 
+const ProductController = require("../app/controllers/product")
+const SubCategoryController = require("../app/controllers/sub-category")
+
+const SubCategoryMiddleware = require("../app/middlewares/sub-category")
+const CategoryMiddleware = require("../app/middlewares/category")
 
 router.get('/delete_sub_category/:id', SubCategoryController.Delete)
-router.post('/update_sub_category/:id', SubCategoryController.Update)
+router.post('/update_sub_category/:id', SubCategoryMiddleware.EditValidate, SubCategoryController.Update)
 router.get('/edit_sub_category/:id', SubCategoryController.Edit)
-router.post('/store_sub_category', SubCategoryController.Store)
+router.post('/store_sub_category', SubCategoryMiddleware.AddValidate, SubCategoryController.Store)
 router.get('/add_sub_category', SubCategoryController.Add)
 router.get('/sub_category', SubCategoryController.Index)
 
@@ -19,9 +23,9 @@ router.get('/add_product', ProductController.Add)
 router.get("/product", ProductController.Index)
 
 router.get("/delete_category/:id", CategoryController.Delete)
-router.post("/update_category/:id", CategoryController.Update)
+router.post("/update_category/:id", CategoryMiddleware.EditValidate, CategoryController.Update)
 router.get("/edit_category/:id", CategoryController.Edit)
-router.post("/store_category", CategoryController.Store)
+router.post("/store_category", CategoryMiddleware.AddValidate, CategoryController.Store)
 router.get("/add_category", CategoryController.Add)
 router.get("/category", CategoryController.Index)
 

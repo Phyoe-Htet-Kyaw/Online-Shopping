@@ -1,6 +1,4 @@
-const e = require("express");
-const db = require("../database/db");
-const router = require("../routes/admin");
+const db = require("../../database/db");
 
 exports.Index = (req, res) => {
     db.query(`SELECT sub_category.id, sub_category.name, category.name AS category FROM sub_category INNER JOIN category ON sub_category.category_id=category.id ORDER BY sub_category.id DESC`, (err, rows, fields) => {

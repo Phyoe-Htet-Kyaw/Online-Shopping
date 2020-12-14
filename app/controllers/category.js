@@ -1,4 +1,4 @@
-const db = require("../database/db")
+const db = require("../../database/db")
 
 exports.Index = (req, res) => {
     db.query("SELECT * FROM category ORDER BY id DESC", (err, rows, fields) => {
