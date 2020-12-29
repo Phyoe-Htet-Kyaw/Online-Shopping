@@ -2,6 +2,7 @@ const db = require("../../database/db")
 const multer = require('multer')
 const path = require("path")
 const fs = require("fs")
+const Middleware = require("../middlewares/product")
 
 const storage = multer.diskStorage({
     destination: "./assets/uploads/",
@@ -60,7 +61,7 @@ exports.Add = (req, res) => {
     })
 }
 
-const showCategoryWithMessage = msg => {
+const showCategoryWithMessage = (res, msg) => {
     db.query(`SELECT * FROM category`, (sql_err, rows, fields) => {
         if(sql_err){
             console.log(err)
@@ -72,26 +73,27 @@ const showCategoryWithMessage = msg => {
 
 exports.Store = (req, res) => {
     upload(req, res, (err) => {
-        console.log(req.file)
-        if(err){
-            showCategoryWithMessage(err)
-        }else{
-            if(req.file == undefined){
-                showCategoryWithMessage("Please select an image!")
+        if(Middleware.AddValidate(req, res)){
+            if(err){
+                showCategoryWithMessage(res, err)
             }else{
-                var instock;
-                if(req.body.instock == "on"){
-                    instock = 1;
+                if(req.file == undefined){
+                    showCategoryWithMessage(res, "Please select an image!")
                 }else{
-                    instock = 0;
-                }
-                db.query(`INSERT INTO products (name, instock, price, discount_price, qty, description, photo, category_id) VALUES ("${req.body.name}", "${instock}", "${req.body.price}", "${req.body.discount_price}", "${req.body.qty}", '${req.body.description}', "${req.file.filename}", "${req.body.category_id}")`, (err, rows, fields) => {
-                    if(err){
-                        console.log(err)
+                    var instock;
+                    if(req.body.instock == "on"){
+                        instock = 1;
                     }else{
-                        res.redirect("/admin/product")
+                        instock = 0;
                     }
-                })
+                    db.query(`INSERT INTO products (name, instock, price, discount_price, qty, description, photo, category_id) VALUES ("${req.body.name}", "${instock}", "${req.body.price}", "${req.body.discount_price}", "${req.body.qty}", '${req.body.description}', "${req.file.filename}", "${req.body.category_id}")`, (err, rows, fields) => {
+                        if(err){
+                            console.log(err)
+                        }else{
+                            res.redirect("/admin/product")
+                        }
+                    })
+                }
             }
         }
     })
@@ -118,60 +120,62 @@ exports.Edit = (req, res) => {
 
 exports.Update = (req, res) => {
     upload(req, res, (err) => {
-        if(err){
-            var category;
-            db.query(`SELECT * FROM category`, (sql_err, rows, fields) => {
-                if(sql_err){
-                    console.log(sql_err)
-                }else{
-                    category = rows
-                }
-            })
-
-            db.query(`SELECT * FROM products WHERE id="${req.params.id}"`, (sql_err_2, rows, fields) => {
-                if(sql_err_2){
-                    console.log(sql_err_2)
-                }else{
-                    product = rows[0]
-                    res.render('admin/product/edit-product', { category: category, product: rows[0], message: err })
-                }
-            })
-        }else{
-            if(req.file == undefined){
-                var instock;
-                if(req.body.instock == "on"){
-                    instock = 1;
-                }else{
-                    instock = 0;
-                }
-                db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
-                    if(err){
-                        console.log(err)
+        if(Middleware.EditValidate(req, res)){
+            if(err){
+                var category;
+                db.query(`SELECT * FROM category`, (sql_err, rows, fields) => {
+                    if(sql_err){
+                        console.log(sql_err)
                     }else{
-                        res.redirect("/admin/product")
+                        category = rows
                     }
                 })
-            }else{
+    
                 db.query(`SELECT * FROM products WHERE id="${req.params.id}"`, (sql_err_2, rows, fields) => {
                     if(sql_err_2){
                         console.log(sql_err_2)
                     }else{
-                        fs.unlinkSync("./assets/uploads/" + rows[0].photo)
+                        product = rows[0]
+                        res.render('admin/product/edit-product', { category: category, product: rows[0], message: err })
                     }
                 })
-                var instock;
-                if(req.body.instock == "on"){
-                    instock = 1;
-                }else{
-                    instock = 0;
-                }
-                db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", photo="${req.file.filename}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
-                    if(err){
-                        console.log(err)
+            }else{
+                if(req.file == undefined){
+                    var instock;
+                    if(req.body.instock == "on"){
+                        instock = 1;
                     }else{
-                        res.redirect("/admin/product")
+                        instock = 0;
                     }
-                })
+                    db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
+                        if(err){
+                            console.log(err)
+                        }else{
+                            res.redirect("/admin/product")
+                        }
+                    })
+                }else{
+                    db.query(`SELECT * FROM products WHERE id="${req.params.id}"`, (sql_err_2, rows, fields) => {
+                        if(sql_err_2){
+                            console.log(sql_err_2)
+                        }else{
+                            fs.unlinkSync("./assets/uploads/" + rows[0].photo)
+                        }
+                    })
+                    var instock;
+                    if(req.body.instock == "on"){
+                        instock = 1;
+                    }else{
+                        instock = 0;
+                    }
+                    db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", photo="${req.file.filename}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
+                        if(err){
+                            console.log(err)
+                        }else{
+                            res.redirect("/admin/product")
+                        }
+                    })
+                }
             }
         }
     })

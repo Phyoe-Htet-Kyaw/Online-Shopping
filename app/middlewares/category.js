@@ -13,7 +13,7 @@ const fetchCategoryTwo = (req, res, msg) => {
 exports.AddValidate = (req, res, next) => {
     var name = req.body.name
     var category_id = req.body.category_id
-
+    
     if(name == ""){
         res.render("admin/category/add-category", { message: "Please enter name!" })
     }else{

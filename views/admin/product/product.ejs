@@ -27,6 +27,7 @@
                   <tr>
                     <th>Option</th>
                     <th>No.</th>
+                    <th>Name</th>
                     <th>Instock</th>
                     <th>Original Price</th>
                     <th>Discount Price</th>
@@ -46,6 +47,19 @@
                       </td>
                       <td><%= key + 1 %></td>
                       <td><%= item.name %></td>
+                      <td>
+                        <% 
+                          if(item.instock == 0){
+                            %>
+                              <span class="badge badge-danger">No</span>
+                              <%  
+                            }else if(item.instock == 1){
+                              %>
+                              <span class="badge badge-success">Yes</span>
+                            <%
+                          }
+                        %>
+                      </td>
                       <td><%= item.price %> MMK</td>
                       <td><%= item.discount_price %> MMK</td>
                       <td><%= item.price - item.discount_price %> MMK</td>

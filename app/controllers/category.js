@@ -28,7 +28,6 @@ exports.Store = (req, res) => {
 }
 
 exports.Edit = (req, res) => {
-    console.log(req.params.id)
     db.query(`SELECT * FROM category WHERE id="${req.params.id}"`, (err, rows, fields) => {
         if(!err){
             res.render("admin/category/edit-category", { category: rows[0] })

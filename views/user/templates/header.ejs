@@ -143,7 +143,7 @@
                                     <div class="category-menu categori-hide">
                                         <nav>
                                             <ul>
-                                                <li class="cr-dropdown"><a href="#">Clothing <span class="icon-arrow-right"></span></a>
+                                                <!-- <li class="cr-dropdown"><a href="#">Clothing <span class="icon-arrow-right"></span></a>
                                                     <div class="category-menu-dropdown ct-menu-res-height-1">
                                                         <div class="single-category-menu ct-menu-mrg-bottom category-menu-border">
                                                             <h4>Men Clothing</h4>
@@ -254,15 +254,15 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </li>
-                                                <li class="cr-dropdown"><a href="shop.html">Baby Boy </a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Accessories </a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Shoes</a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Shirt</a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">T-Shirt</a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Coat</a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Jeans</a></li>
-                                                <li class="cr-dropdown"><a href="shop.html">Collection </a></li>
+                                                </li> -->
+                                                <%
+                                                    category.forEach(function(item){
+                                                        %>
+                                                            <li class="cr-dropdown"><a href="shop.html"><%= item.name %> </a></li>
+                                                        <%
+                                                    })
+                                                %>
+                                                <li class="cr-dropdown"><a href="shop.html">Others </a></li>
                                             </ul>
                                         </nav>
                                     </div>
