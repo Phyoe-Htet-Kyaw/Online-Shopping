@@ -4,45 +4,8 @@ const path = require("path")
 const fs = require("fs")
 const Middleware = require("../middlewares/product")
 
-const storage = multer.diskStorage({
-    destination: "./assets/uploads/",
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
-    }
-})
-
-const upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|gif/
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-        const mimetype = filetypes.test(file.mimetype)
-
-        if(mimetype && extname){
-            return cb(null, true)
-        }else{
-            cb("Please select Image with jpeg, jpg, png and gif extensions!")
-        }
-    },
-}).single('photo')
-
-const uploads = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|gif/
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-        const mimetype = filetypes.test(file.mimetype)
-
-        if(mimetype && extname){
-            return cb(null, true)
-        }else{
-            cb("Please select Image with jpeg, jpg, png and gif extensions!")
-        }
-    },
-}).array('photo')
-
 exports.Index = (req, res) => {
-    db.query("SELECT products.id, products.name, products.instock, products.price, products.discount_price, products.qty, products.photo, category.name AS category FROM products INNER JOIN category ON products.category_id=category.id ORDER BY products.id DESC", (err, rows, fields) => {
+    db.query("SELECT products.id, products.name, products.instock, products.price, products.discount_price, products.qty, products.photo, products.description, category.name AS category FROM products INNER JOIN category ON products.category_id=category.id ORDER BY products.id DESC", (err, rows, fields) => {
         if(!err){
             res.render("admin/product/product", { product: rows })
         }else{
@@ -56,6 +19,7 @@ exports.Add = (req, res) => {
         if(err){
             console.log(err)
         }else{
+            console.log(rows)
             res.render("admin/product/add-product", { category: rows })
         }
     })
@@ -72,29 +36,22 @@ const showCategoryWithMessage = (res, msg) => {
 }
 
 exports.Store = (req, res) => {
-    upload(req, res, (err) => {
-        if(Middleware.AddValidate(req, res)){
-            if(err){
-                showCategoryWithMessage(res, err)
-            }else{
-                if(req.file == undefined){
-                    showCategoryWithMessage(res, "Please select an image!")
-                }else{
-                    var instock;
-                    if(req.body.instock == "on"){
-                        instock = 1;
-                    }else{
-                        instock = 0;
-                    }
-                    db.query(`INSERT INTO products (name, instock, price, discount_price, qty, description, photo, category_id) VALUES ("${req.body.name}", "${instock}", "${req.body.price}", "${req.body.discount_price}", "${req.body.qty}", '${req.body.description}', "${req.file.filename}", "${req.body.category_id}")`, (err, rows, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            res.redirect("/admin/product")
-                        }
-                    })
-                }
-            }
+    const img_files = req.files
+    var img_name = ""
+    img_files.map(item => {
+        img_name += item.filename + ","
+    })
+    var instock;
+    if(req.body.instock == "on"){
+        instock = 1;
+    }else{
+        instock = 0;
+    }
+    db.query(`INSERT INTO products (name, instock, price, discount_price, qty, description, photo, category_id) VALUES ("${req.body.name}", "${instock}", "${req.body.price}", "${req.body.discount_price}", "${req.body.qty}", '${req.body.description}', "${img_name}", "${req.body.category_id}")`, (err, rows, fields) => {
+        if(err){
+            console.log(err)
+        }else{
+            res.redirect("/admin/product")
         }
     })
 }
@@ -114,6 +71,17 @@ exports.Edit = (req, res) => {
             console.log(err)
         }else{
             res.render('admin/product/edit-product', { category: category, product: rows[0] })
+        }
+    })
+}
+
+exports.Detail = (req, res) => {
+    db.query(`SELECT products.id, products.name, products.instock, products.price, products.discount_price, products.qty, products.photo, products.description, category.name AS category FROM products INNER JOIN category ON products.category_id=category.id WHERE products.id=${req.params.id}`, (err, rows, fields) => {
+        if(err){
+            console.log(err)
+        }else{
+            console.log(rows)
+            res.render('admin/product/detail-product', { product: rows[0] })
         }
     })
 }

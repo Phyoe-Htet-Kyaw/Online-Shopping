@@ -1,0 +1,62 @@
+<%- include('../templates/header.ejs') -%>
+
+<style>
+    .product-detail li{
+        list-style: none;
+        line-height: 30px;
+    }
+</style>
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <h1>Product</h1>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <!-- <a href="/admin/add_product" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus"></i></a> -->
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="img">
+                    <img src="/assets/uploads/<%= product.photo %>" style="width: 100%;" alt="">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="product-detail">
+                    <ul class="list-group">
+                        <li class="list-group-item">Name: <%= product.name %></li>
+                        <li class="list-group-item">Instock: <% if(product.instock == 1){ %> Yes <% }else{ %> No <%} %></li>
+                        <li class="list-group-item">Price: <%= product.price %>MMK</li>
+                        <li class="list-group-item">Discount-Price: <%= product.discount_price %>MMK</li>
+                        <li class="list-group-item">Quantity: <%= product.qty %></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="para">
+                    <div class="card">
+                        <div class="card-body">
+                            <%- product.description %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<%- include('../templates/footer.ejs') -%>
