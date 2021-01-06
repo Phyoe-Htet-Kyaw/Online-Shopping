@@ -65,7 +65,14 @@
                       <td><%= item.discount_price %> MMK</td>
                       <td><%= item.price - item.discount_price %> MMK</td>
                       <td><%= item.qty %></td>
-                      <td><img src="/assets/uploads/<%= item.photo %>" alt="<%= item.photo %>" style="width: 100px;"></td>
+                      <td>
+                        <% item.photo.split(",").forEach(function(img){
+                          %>
+
+                          <img src="/assets/uploads/<%= img %>" alt="<%= img %>" style="width: 100px;">
+                          <%
+                        }) %>
+                      </td>
                       <td><%= item.category %></td>
                     </tr>
                     <%
@@ -81,5 +88,6 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  
 
 <%- include('../templates/footer.ejs') -%>

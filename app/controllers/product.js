@@ -19,18 +19,7 @@ exports.Add = (req, res) => {
         if(err){
             console.log(err)
         }else{
-            console.log(rows)
             res.render("admin/product/add-product", { category: rows })
-        }
-    })
-}
-
-const showCategoryWithMessage = (res, msg) => {
-    db.query(`SELECT * FROM category`, (sql_err, rows, fields) => {
-        if(sql_err){
-            console.log(err)
-        }else{
-            res.render("admin/product/add-product", { category: rows, message: msg })
         }
     })
 }
@@ -87,66 +76,7 @@ exports.Detail = (req, res) => {
 }
 
 exports.Update = (req, res) => {
-    upload(req, res, (err) => {
-        if(Middleware.EditValidate(req, res)){
-            if(err){
-                var category;
-                db.query(`SELECT * FROM category`, (sql_err, rows, fields) => {
-                    if(sql_err){
-                        console.log(sql_err)
-                    }else{
-                        category = rows
-                    }
-                })
-    
-                db.query(`SELECT * FROM products WHERE id="${req.params.id}"`, (sql_err_2, rows, fields) => {
-                    if(sql_err_2){
-                        console.log(sql_err_2)
-                    }else{
-                        product = rows[0]
-                        res.render('admin/product/edit-product', { category: category, product: rows[0], message: err })
-                    }
-                })
-            }else{
-                if(req.file == undefined){
-                    var instock;
-                    if(req.body.instock == "on"){
-                        instock = 1;
-                    }else{
-                        instock = 0;
-                    }
-                    db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            res.redirect("/admin/product")
-                        }
-                    })
-                }else{
-                    db.query(`SELECT * FROM products WHERE id="${req.params.id}"`, (sql_err_2, rows, fields) => {
-                        if(sql_err_2){
-                            console.log(sql_err_2)
-                        }else{
-                            fs.unlinkSync("./assets/uploads/" + rows[0].photo)
-                        }
-                    })
-                    var instock;
-                    if(req.body.instock == "on"){
-                        instock = 1;
-                    }else{
-                        instock = 0;
-                    }
-                    db.query(`UPDATE products SET name="${req.body.name}", instock="${instock}", price="${req.body.price}", discount_price="${req.body.discount_price}", qty="${req.body.qty}", description="${req.body.description}", photo="${req.file.filename}", category_id="${req.body.category_id}" WHERE id=${req.params.id}`, (err, rows, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            res.redirect("/admin/product")
-                        }
-                    })
-                }
-            }
-        }
-    })
+    res.redirect("/admin/product")
 }
 
 exports.Delete = (req, res) => {
@@ -154,7 +84,16 @@ exports.Delete = (req, res) => {
         if(sql_err_2){
             console.log(sql_err_2)
         }else{
-            fs.unlinkSync("./assets/uploads/" + rows[0].photo)
+            if(rows[0].photo != ""){
+                if(rows[0].photo != ""){
+                    let photo = rows[0].photo.split(",")
+                    photo.map(item => {
+                        if(item != ""){
+                            fs.unlinkSync("./assets/uploads/" + item)
+                        }
+                    })
+                }
+            }
         }
     })
 

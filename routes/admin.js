@@ -7,6 +7,7 @@ const SubCategoryController = require("../app/controllers/sub-category")
 
 const SubCategoryMiddleware = require("../app/middlewares/sub-category")
 const CategoryMiddleware = require("../app/middlewares/category")
+const ProductMiddleware = require("../app/middlewares/product")
 
 
 var multer = require('multer');
@@ -31,9 +32,9 @@ router.get('/sub_category', SubCategoryController.Index)
 
 router.get('/detail_product/:id', ProductController.Detail)
 router.get('/delete_product/:id', ProductController.Delete)
-router.post('/update_product/:id', ProductController.Update)
+router.post('/update_product/:id', upload.array('photo', 5), ProductMiddleware.EditValidate, ProductController.Update)
 router.get('/edit_product/:id', ProductController.Edit)
-router.post('/store_product', upload.array('photo', 5), ProductController.Store)
+router.post('/store_product', upload.array('photo', 5), ProductMiddleware.AddValidate, ProductController.Store)
 router.get('/add_product', ProductController.Add)
 router.get("/product", ProductController.Index)
 
